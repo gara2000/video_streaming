@@ -1,5 +1,4 @@
 frontend_key_name="cassaFrontendKey"
-associate_public_ip = true
 frontend_ingress_rules = [ {
     from_port   = 22
     to_port     = 22

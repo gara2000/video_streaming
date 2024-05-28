@@ -27,7 +27,3 @@ variable "hosted_zone" {
     description = "The public domain name"
     type = string
 }
-variable "associate_public_ip" {
-    description = "Boolean value to determine whether to associate a public ip"
-    type = bool
-}

@@ -23,7 +23,7 @@ module "frontend" {
     sg_name = "frontend_sg"
     egress_rules = var.frontend_egress_rules
     ingress_rules = var.frontend_ingress_rules
-    associate_public_ip = var.associate_public_ip
+    associate_public_ip = true
     hosted_zone = "devops.intuitivesoft.cloud."
     common_tags = {
         Name = "cassa_frontend"
@@ -43,6 +43,7 @@ module "streamer" {
     sg_name = "streamer_sg"
     egress_rules = var.streamer_egress_rules
     ingress_rules = var.streamer_ingress_rules
+    associate_public_ip = false 
     hosted_zone = "devops.intuitivesoft.cloud."
     common_tags = {
         Name = "cassa_streamer"
