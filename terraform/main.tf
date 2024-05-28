@@ -59,8 +59,12 @@ module "inventory" {
     source = "./modules/inventory"
     inventory_path = "${path.cwd}/../ansible/inventory.tpl"
     groups = [{
-      name = "frontend",
-      hosts = [module.frontend.public_dns]
+        name = "frontends",
+        hosts = [module.frontend.public_dns, "another_host"]
+    },
+    {
+        name = "streamers"
+        hosts = [module.streamer.public_dns]
     }]
 
 }
