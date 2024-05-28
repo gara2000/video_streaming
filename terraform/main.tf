@@ -19,6 +19,7 @@ module "frontend" {
     vpc_id = module.infra.vpc_id
     subnet_id = module.infra.public_subnet_id
     key_pair_name = var.frontend_key_name
+    key_folder = "${path.cwd}/../ansible/keys"
     instance_id = var.instance_id
     instance_type = var.instance_type
     sg_name = "frontend_sg"
@@ -40,6 +41,7 @@ module "streamer" {
     vpc_id = module.infra.vpc_id
     subnet_id = module.infra.private_subnet_id
     key_pair_name = var.streamer_key_name
+    key_folder = "${path.cwd}/../ansible/keys"
     instance_id = var.instance_id
     instance_type = var.instance_type
     sg_name = "streamer_sg"
@@ -57,14 +59,18 @@ module "streamer" {
 # Populate the Ansible inventory file
 module "inventory" {
     source = "./modules/inventory"
-    inventory_path = "${path.cwd}/../ansible/inventory.tpl"
+    template_path = "${path.cwd}/../ansible/inventory.tpl"
+    inventory_path = "${path.cwd}/../ansible/inventory/hosts"
     groups = [{
         name = "frontends",
-        hosts = [module.frontend.public_dns, "another_host"]
+        hosts = [module.frontend.public_dns]
+        key_file = "${path.cwd}/../ansible/keys/${var.frontend_key_name}.pem"
+        user = "ubuntu"
     },
     {
         name = "streamers"
         hosts = [module.streamer.public_dns]
+        key_file = "${path.cwd}/../ansible/keys/${var.streamer_key_name}.pem"
+        user = "ubuntu"
     }]
-
 }

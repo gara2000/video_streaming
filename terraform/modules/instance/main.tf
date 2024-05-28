@@ -65,7 +65,7 @@ resource "aws_instance" "app" {
 # Get private key locally
 resource "local_sensitive_file" "private_key_file" {
     content = tls_private_key.generated_key.private_key_openssh
-    filename = "${path.module}/${aws_key_pair.key.key_name}.pem"
+    filename = "${var.key_folder}/${aws_key_pair.key.key_name}.pem"
 }
 
 data "aws_route53_zone" "hosted_zone" {

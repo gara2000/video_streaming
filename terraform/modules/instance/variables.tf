@@ -6,17 +6,18 @@ variable "key_pair_name" {
     type = string
     default = "myKeyPair"
 }
-
+variable "key_folder" {
+    type = string
+    default = "."
+}
 variable "instance_type" {
     type = string
     default = "t2.micro"
 }
-
 variable "instance_id" {
     type = string
     default = "ami-04b70fa74e45c3917"
 }
-
 variable "ingress_rules" {
     description = "Allowed inbound rules"
     type = list(object({
@@ -27,7 +28,6 @@ variable "ingress_rules" {
     }))
     default = []
 }
-
 variable "egress_rules" {
     description = "Allow outbound rules"
     type = list(object({
@@ -38,7 +38,6 @@ variable "egress_rules" {
     }))
     default = []
 }
-
 variable "common_tags" {
     description = "Common tags for the module components"
     type = map(string)

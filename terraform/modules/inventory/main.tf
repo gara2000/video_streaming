@@ -3,12 +3,10 @@ terraform {
 }
 
 resource "local_file" "hosts_cfg" {
-  content = templatefile(var.inventory_path,
+  content = templatefile(var.template_path,
     {
         groups = var.groups
-    #   kafka_processors = aws_instance.kafka_processor.*.public_ip
-    #   test_clients = aws_instance.test_client.*.public_ip
     }
   )
-  filename = "../ansible/inventory/hosts.cfg"
+  filename = var.inventory_path
 }
