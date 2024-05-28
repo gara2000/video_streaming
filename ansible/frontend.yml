@@ -1,0 +1,12 @@
+---
+- name: Provision Frontend servers
+  hosts: frontends
+  gather_facts: true
+  become: true
+
+  vars_files:
+    - vars/vars.yml
+
+  roles:
+    - gara2000.nginx
+    - gara2000.ssl_cert

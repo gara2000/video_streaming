@@ -1,5 +1,5 @@
 terraform-apply:
-	@echo "----------terraform: Building the infrastructure--------------"
+	@echo "----------Terraform: Building the infrastructure--------------"
 	{ \
 		cd terraform ; \
 		terraform init ; \
@@ -11,8 +11,31 @@ terraform-apply:
 	}
 
 terraform-destroy:
-	@echo "----------terraform: Destroying the infrastructure------------"
+	@echo "----------Terraform: Destroying the infrastructure------------"
 	{ \
 		cd terraform ; \
 		terraform destroy -auto-approve ; \
 	}
+
+ansible-lint:
+	@echo "----------Ansible: install required roles --------------------"
+	{ \
+		cd ansible ; \
+		ansible-lint ; \
+	}
+
+ansible-install:
+	@echo "----------Ansible: install required roles --------------------"
+	{ \
+		cd ansible ; \
+		ansible-galaxy install -r requirements.yml ; \
+	}
+
+ansible-frontend:
+	@echo "----------Ansible: Configure Frontend server--------------------"
+	{ \
+		cd ansible ; \
+		ansible-playbook frontend.yml ; \
+	}
+
+ansible-all: ansible-lint ansible-install ansible-frontend
