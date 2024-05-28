@@ -9,6 +9,6 @@ ${host}
 ansible_ssh_private_key_file = ${group.key_file}
 ansible_user = ${group.user}
 %{ if group.private ~}
-ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ${group.bastion_user}@${group.bastion_host}"'
+ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q -i ${group.bastion_key} ${group.bastion_user}@${group.bastion_host}"'
 %{ endif ~}
 %{ endfor ~}

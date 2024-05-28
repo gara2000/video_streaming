@@ -61,7 +61,7 @@ module "bastion" {
     source = "./modules/instance"
     name = "Bastion"
     vpc_id = module.infra.vpc_id
-    subnet_id = module.infra.private_subnet_id
+    subnet_id = module.infra.public_subnet_id
     key_pair_name = var.bastion_key_name
     key_folder = "${path.cwd}/../ansible/keys"
     instance_id = var.instance_id
@@ -98,6 +98,7 @@ module "inventory" {
         private = true
         bastion_user = "ubuntu"
         bastion_host = module.bastion.public_dns
+        bastion_key = "${path.cwd}/../ansible/keys/${var.bastion_key_name}.pem"
     },
     {
         name = "bastions"

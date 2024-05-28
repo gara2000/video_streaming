@@ -16,5 +16,6 @@ variable "groups" {
         private = bool
         bastion_user = optional(string)
         bastion_host = optional(string)
+        bastion_key = optional(string)
     }))
 }

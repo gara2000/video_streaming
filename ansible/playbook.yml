@@ -1,0 +1,9 @@
+---
+- name: Test streamer
+  hosts: streamers
+  gather_facts: true
+
+  tasks:
+    - name: test streamer
+      debug:
+        msg: "this is a test"
