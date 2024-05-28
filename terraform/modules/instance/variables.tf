@@ -1,3 +1,7 @@
+variable "name" {
+    type = string
+    default = "instance"
+}
 variable "key_pair_name" {
     type = string
     default = "myKeyPair"
