@@ -3,7 +3,11 @@ terraform-apply:
 	{ \
 		cd terraform ; \
 		terraform init ; \
-		terraform apply -var-file common.tfvars -var-file frontend.tfvars -var-file streamer.tfvars -auto-approve ; \
+		terraform apply -var-file tfvars/common.tfvars \
+						-var-file tfvars/frontend.tfvars \
+						-var-file tfvars/streamer.tfvars \
+						-var-file tfvars/bastion.tfvars \
+						-auto-approve ; \
 	}
 
 terraform-destroy:

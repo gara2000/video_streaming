@@ -17,3 +17,6 @@ output "streamer_public_dns" {
 output "path" {
     value = module.inventory.path
 }
+output "private_streamer_ip" {
+    value = module.streamer.private_ip
+}

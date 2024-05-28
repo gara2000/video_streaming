@@ -13,5 +13,8 @@ variable "groups" {
         hosts = list(string) 
         key_file = string
         user = string
+        private = bool
+        bastion_user = optional(string)
+        bastion_host = optional(string)
     }))
 }

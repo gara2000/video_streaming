@@ -47,10 +47,32 @@ module "streamer" {
     sg_name = "streamer_sg"
     egress_rules = var.streamer_egress_rules
     ingress_rules = var.streamer_ingress_rules
-    associate_public_ip = true
+    associate_public_ip = false 
     hosted_zone = "devops.intuitivesoft.cloud."
     common_tags = {
         Name = "cassa_streamer"
+        Owner = "cassa"
+        Lab = "project"
+    }
+}
+
+# Create Bastion server, to serve as proxy between ansible and the streamer
+module "bastion" {
+    source = "./modules/instance"
+    name = "Bastion"
+    vpc_id = module.infra.vpc_id
+    subnet_id = module.infra.private_subnet_id
+    key_pair_name = var.bastion_key_name
+    key_folder = "${path.cwd}/../ansible/keys"
+    instance_id = var.instance_id
+    instance_type = var.instance_type
+    sg_name = "bastion_sg"
+    egress_rules = var.bastion_egress_rules
+    ingress_rules = var.bastion_ingress_rules
+    associate_public_ip = true
+    hosted_zone = "devops.intuitivesoft.cloud."
+    common_tags = {
+        Name = "cassa_bastion"
         Owner = "cassa"
         Lab = "project"
     }
@@ -66,11 +88,22 @@ module "inventory" {
         hosts = [module.frontend.public_dns]
         key_file = "${path.cwd}/../ansible/keys/${var.frontend_key_name}.pem"
         user = "ubuntu"
+        private = false
     },
     {
         name = "streamers"
-        hosts = [module.streamer.public_dns]
+        hosts = [module.streamer.private_ip]
         key_file = "${path.cwd}/../ansible/keys/${var.streamer_key_name}.pem"
         user = "ubuntu"
+        private = true
+        bastion_user = "ubuntu"
+        bastion_host = module.bastion.public_dns
+    },
+    {
+        name = "bastions"
+        hosts = [module.bastion.public_dns]
+        key_file = "${path.cwd}/../ansible/keys/${var.bastion_key_name}.pem"
+        user = "ubuntu"
+        private = false
     }]
 }
