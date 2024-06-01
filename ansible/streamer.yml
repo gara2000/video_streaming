@@ -1,0 +1,21 @@
+---
+- name: Streamer configuration
+  hosts: streamers
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Install ffmpeg
+      apt:
+        pkg: ffmpeg
+        update_cache: true
+
+    - name: Copy the video to be streamed
+      copy:
+        src: files/stock_screening.mp4
+        dest: /media
+        owner: "{{ anisble_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Start video streaming
+      command: "ffmpeg -re -i stock_screening.mp4 -c:v libx264 -c:a aac -f flv rtmp://
