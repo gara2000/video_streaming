@@ -1,4 +1,4 @@
-frontend_key_name="cassaFrontendKey"
+frontend_key_name="cassafrontendKey"
 frontend_ingress_rules = [ {
     from_port   = 22
     to_port     = 22

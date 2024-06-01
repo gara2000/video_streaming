@@ -28,7 +28,7 @@ ansible-install:
 	@echo "----------Ansible: install required roles --------------------"
 	{ \
 		cd ansible ; \
-		ansible-galaxy install -r requirements.yml ; \
+		ansible-galaxy install -r requirements.yml --force ; \
 	}
 
 ansible-frontend:
@@ -36,6 +36,13 @@ ansible-frontend:
 	{ \
 		cd ansible ; \
 		ansible-playbook frontend.yml ; \
+	}
+
+ansible-ping:
+	@echo "----------Ansible: Configure Frontend server--------------------"
+	{ \
+		cd ansible ; \
+		ansible-playbook test_ping.yml ; \
 	}
 
 ansible-all: ansible-lint ansible-install ansible-frontend

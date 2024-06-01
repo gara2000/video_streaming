@@ -1,3 +1,7 @@
 ---
-domain: cassafrontend.devops.intuitivesoft.cloud
+domain: casssafrontend.devops.intuitivesoft.cloud
 email: devops@intuitivesoft.cloud
+context: templates/
+http_config: http.conf
+HTTP_PORT: 8080
+NGINX_HOST: frontend

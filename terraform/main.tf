@@ -39,7 +39,7 @@ module "streamer" {
     source = "./modules/instance"
     name = "Streamer"
     vpc_id = module.infra.vpc_id
-    subnet_id = module.infra.private_subnet_id
+    subnet_id = module.infra.public_subnet_id
     key_pair_name = var.streamer_key_name
     key_folder = "${path.cwd}/../ansible/keys"
     instance_id = var.instance_id
@@ -47,7 +47,7 @@ module "streamer" {
     sg_name = "streamer_sg"
     egress_rules = var.streamer_egress_rules
     ingress_rules = var.streamer_ingress_rules
-    associate_public_ip = false 
+    associate_public_ip = true
     hosted_zone = "devops.intuitivesoft.cloud."
     common_tags = {
         Name = "cassa_streamer"

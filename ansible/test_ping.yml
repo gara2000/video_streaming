@@ -1,0 +1,14 @@
+---
+- name: Checkconnection inside remote servers
+  hosts: all
+  become: false
+  gather_facts: false
+  
+  tasks:
+    - name: ping
+      command: ping -c 3 google.com
+      register: result
+
+    - name: Output result
+      debug:
+        msg: "{{ result.stdout_lines | select('search', 'packet loss') }}"
