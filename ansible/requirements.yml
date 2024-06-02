@@ -5,4 +5,5 @@ roles:
     # version: v1.0.1
     version: v1.2.0
   - name: gara2000.ssl_cert
-    version: v1.0.0
+    # version: v1.0.0
+    version: v1.0.1
