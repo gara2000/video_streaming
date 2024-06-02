@@ -75,7 +75,7 @@ data "aws_route53_zone" "hosted_zone" {
 resource "aws_route53_record" "my_zone" {
     count = var.associate_public_ip ? 1:0
     zone_id = data.aws_route53_zone.hosted_zone.zone_id
-    name    = "casssa${var.name}.${data.aws_route53_zone.hosted_zone.name}"
+    name    = "${var.domain_prefix}${var.name}.${data.aws_route53_zone.hosted_zone.name}"
     type    = "A"
     ttl     = "300"
     records = [aws_instance.app.public_ip]

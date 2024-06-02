@@ -1,7 +1,6 @@
 server {
-    listen 80 {{ 'default_server' if main_server }};
-    listen [::]:80 {{ 'default_server' if main_server }};
-    # listen {{ http_port }};
+    listen {{ http_port }} {{ 'default_server' if main_server }};
+    listen [::]:{{http_port}} {{ 'default_server' if main_server }};
     server_name {{ nginx_host }};
 
     location / {

@@ -7,6 +7,7 @@ terraform-apply:
 						-var-file tfvars/frontend.tfvars \
 						-var-file tfvars/streamer.tfvars \
 						-var-file tfvars/bastion.tfvars \
+						-var-file tfvars/ansible.tfvars \
 						-auto-approve ; \
 	}
 

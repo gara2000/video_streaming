@@ -42,6 +42,12 @@
   with_items: "{{ servers }}"
   notify: restart nginx
 
+# - name: rtmp configuration
+#   ansible.builtin.template:
+#     src: "rtmp.j2"
+#     dest: "/etc/nginx/conf.d/rtmp"
+#   notify: restart nginx
+
 - name: change index.html
   ansible.builtin.template:
     src: index.html.j2

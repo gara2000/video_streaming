@@ -1,6 +1,6 @@
 ---
-- name: Streamer configuration
-  hosts: streamers
+- name: Test streaming from localhost
+  hosts: frontends
   become: true
   gather_facts: true
 

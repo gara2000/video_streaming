@@ -1,8 +1,0 @@
----
-domain: casssafrontend.devops.intuitivesoft.cloud
-email: devops@intuitivesoft.cloud
-context: templates/
-http_config: http.conf
-http_port: 80
-http_host: casssafrontend.devops.intuitivesoft.cloud
-nginx_host: "192.168.2.170"

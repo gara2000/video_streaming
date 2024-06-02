@@ -103,3 +103,10 @@ variable "bastion_egress_rules" {
     }))
     default = []
 }
+variable "ansible_vars" {
+    default = {} 
+}
+variable "domain_prefix" {
+    type = string
+    default = "cassa"
+}

@@ -26,7 +26,8 @@ module "frontend" {
     egress_rules = var.frontend_egress_rules
     ingress_rules = var.frontend_ingress_rules
     associate_public_ip = true
-    hosted_zone = "devops.intuitivesoft.cloud."
+    hosted_zone = var.hosted_zone
+    domain_prefix = var.domain_prefix
     common_tags = {
         Name = "cassa_frontend"
         Owner = "cassa"
@@ -48,7 +49,8 @@ module "streamer" {
     egress_rules = var.streamer_egress_rules
     ingress_rules = var.streamer_ingress_rules
     associate_public_ip = true
-    hosted_zone = "devops.intuitivesoft.cloud."
+    hosted_zone = var.hosted_zone
+    domain_prefix = var.domain_prefix
     common_tags = {
         Name = "cassa_streamer"
         Owner = "cassa"
@@ -70,7 +72,8 @@ module "bastion" {
     egress_rules = var.bastion_egress_rules
     ingress_rules = var.bastion_ingress_rules
     associate_public_ip = true
-    hosted_zone = "devops.intuitivesoft.cloud."
+    hosted_zone = var.hosted_zone
+    domain_prefix = var.domain_prefix
     common_tags = {
         Name = "cassa_bastion"
         Owner = "cassa"
@@ -81,7 +84,7 @@ module "bastion" {
 # Populate the Ansible inventory file
 module "inventory" {
     source = "./modules/inventory"
-    template_path = "${path.cwd}/../ansible/inventory.tpl"
+    template_path = "${path.cwd}/inventory.tpl"
     inventory_path = "${path.cwd}/../ansible/inventory/hosts"
     groups = [{
         name = "frontends",
@@ -107,4 +110,17 @@ module "inventory" {
         user = "ubuntu"
         private = false
     }]
+}
+
+resource "local_file" "ansible_variables" {
+  content = templatefile("vars.yml.tpl",
+    {
+        ansible_vars = var.ansible_vars,
+        additional_vars = {
+            domain = module.frontend.public_dns
+            nginx_host = module.frontend.private_ip
+        }
+    }
+  )
+  filename = "${path.cwd}/../ansible/vars/vars_terraform.yml"
 }
