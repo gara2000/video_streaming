@@ -15,7 +15,12 @@ terraform-destroy:
 	@echo "----------Terraform: Destroying the infrastructure------------"
 	{ \
 		cd terraform ; \
-		terraform destroy -auto-approve ; \
+		terraform destroy -var-file tfvars/common.tfvars \
+						-var-file tfvars/frontend.tfvars \
+						-var-file tfvars/streamer.tfvars \
+						-var-file tfvars/bastion.tfvars \
+						-var-file tfvars/ansible.tfvars \
+						-auto-approve ; \
 	}
 
 ansible-lint:
@@ -50,7 +55,9 @@ ansible-ping:
 	@echo "----------Ansible: Configure Frontend server--------------------"
 	{ \
 		cd ansible ; \
-		ansible-playbook test_ping.yml ; \
+		ansible-playbook tests\test_ping.yml ; \
 	}
+
+ansible-config: ansible-install ansible-frontend ansible-streamer
 
 ansible-all: ansible-lint ansible-install ansible-frontend

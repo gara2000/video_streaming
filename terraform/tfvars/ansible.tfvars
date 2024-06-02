@@ -1,5 +1,5 @@
 ansible_vars = {
-    context = "{{ playbook_dir }}"
+    context = "\"{{ playbook_dir }}\""
     html_file = "index.html"
     servers = [
         "http",

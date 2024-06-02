@@ -1,5 +1,5 @@
 
-context: "{{ playbook_dir }}" 
+context: "{{ playbook_dir }}"
 
 
 dependencies:
@@ -30,5 +30,5 @@ servers:
 domain: caassafrontend.devops.intuitivesoft.cloud
 
 
-nginx_host: 192.168.2.169
+nginx_host: 192.168.2.75
 
