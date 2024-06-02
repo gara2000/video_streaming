@@ -1,0 +1,17 @@
+server {
+    listen {{ http_port }};
+    server_name {{ nginx_host }};
+
+    location / {
+        root /var/www/{{domain}};
+        index index.html;
+    }
+
+    location /hls {
+        types {
+            application/vnd.apple.mpegurl m3u8;
+            video/mp2t ts;
+        }
+        root /tmp;
+    }
+}
