@@ -43,3 +43,24 @@ resource "aws_default_route_table" "rtb" {
 
     tags = var.common_tags
 }
+
+# Associate default route table with public subnet
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_default_route_table.rtb.id
+}
+
+# Create custom route table
+resource "aws_route_table" "custom" {
+  vpc_id = aws_vpc.vpc.id
+
+  route = []
+
+  tags = var.common_tags
+}
+
+# Associate custom route table with private subnet
+resource "aws_route_table_association" "b" {
+  subnet_id      = aws_subnet.private_subnet.id
+  route_table_id = aws_route_table.custom.id
+}
