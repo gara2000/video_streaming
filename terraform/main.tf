@@ -84,7 +84,7 @@ module "bastion" {
 # Populate the Ansible inventory file
 module "inventory" {
     source = "./modules/inventory"
-    template_path = "${path.cwd}/inventory.tpl"
+    template_path = "${path.cwd}/templates/inventory.tpl"
     inventory_path = "${path.cwd}/../ansible/inventory/hosts"
     groups = [{
         name = "frontends",
@@ -113,7 +113,7 @@ module "inventory" {
 }
 
 resource "local_file" "ansible_variables" {
-  content = templatefile("vars.yml.tpl",
+  content = templatefile("templates/vars.yml.tpl",
     {
         ansible_vars = var.ansible_vars,
         additional_vars = {

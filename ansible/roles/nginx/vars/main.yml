@@ -1,7 +1,0 @@
----
-nginx_host: "192.168.2.206"
-http_host: casafrontend.devops.intuitivesoft.cloud
-http_port: 80
-servers:
-  - http
-main_server: true
