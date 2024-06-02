@@ -1,0 +1,14 @@
+server {
+    listen 1935;
+    chunk_size 4096;
+    allow publish all;
+
+    application hls {
+        live on;
+        record off;
+
+        hls on;
+        hls_path /tmp/hls;
+        hls_fragment 5;
+    }
+}

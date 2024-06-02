@@ -39,7 +39,7 @@ module "streamer" {
     source = "./modules/instance"
     name = "Streamer"
     vpc_id = module.infra.vpc_id
-    subnet_id = module.infra.public_subnet_id
+    subnet_id = module.infra.private_subnet_id
     key_pair_name = var.streamer_key_name
     key_folder = "${path.cwd}/../ansible/keys"
     instance_id = var.instance_id

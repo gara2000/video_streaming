@@ -8,5 +8,4 @@
     - vars/vars.yml
 
   roles:
-    - gara2000.nginx
-    - gara2000.ssl_cert
+    - nginx

@@ -6,6 +6,12 @@ frontend_ingress_rules = [ {
     cidr_blocks = ["0.0.0.0/0"]
 },
 {
+    from_port   = 1935
+    to_port     = 1935
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+},
+{
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"

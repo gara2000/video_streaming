@@ -4,18 +4,22 @@
   become: true
   gather_facts: true
 
+  vars_files:
+    - vars/vars.yml
+
   tasks:
     - name: Install ffmpeg
       apt:
         pkg: ffmpeg
+        state: present 
         update_cache: true
 
     - name: Copy the video to be streamed
       copy:
         src: files/stock_screening.mp4
-        dest: /media
-        owner: "{{ anisble_user }}"
+        dest: /media/stock_screening.mp4
+        owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
 
     - name: Start video streaming
-      command: "ffmpeg -re -i stock_screening.mp4 -c:v libx264 -c:a aac -f flv rtmp://
+      command: "ffmpeg -re -i /media/stock_screening.mp4 -c:v libx264 -c:a aac -f flv rtmp://{{ nginx_host }}/hls/my-video"

@@ -38,6 +38,13 @@ ansible-frontend:
 		ansible-playbook frontend.yml ; \
 	}
 
+ansible-streamer:
+	@echo "----------Ansible: Configure Frontend server--------------------"
+	{ \
+		cd ansible ; \
+		ansible-playbook streamer.yml ; \
+	}
+
 ansible-ping:
 	@echo "----------Ansible: Configure Frontend server--------------------"
 	{ \
