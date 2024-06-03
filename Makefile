@@ -73,4 +73,4 @@ ansible-test: ansible-lint ansible-ping
 
 ansible-all: ansible-lint ansible-install ansible-frontend
 
-all: terraform-apply ansible-config
+reconstruct: terraform-reapply ansible-config
