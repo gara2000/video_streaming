@@ -30,6 +30,7 @@ Refer to the [Getting started](#5--getting-started) section to deploy the servic
     - [4.3- Data encryption with ssl](#41--data-encryption-with-ssl)
         (talk about route53)
 - [5- Getting started](#5--getting-started)
+    - [5.1- Project requirements](#51--project-requirements)
     - [5.1- Building the infrastructure](#51--building-the-infrastructure)
     - [5.2- Configuring the servers](#51--configuring-the-servers)
     - [5.3- Testing the video streaming service](#53--testing-the-video-streaming-service)
@@ -184,14 +185,17 @@ The bastion server serves as a secure gateway for accessing the backend server. 
 Data encryption measures are implemented on our web server to ensure the confidentiality and integrity of transmitted information. By issuing an SSL certification , we guarantee end-to-end encryption for all data exchanged between clients and the web server.
 
 ## 5- Getting started
+### 5.1- Project requirements
+
+### 5.2- Deploying the service
 All the necessary commands are included in a Makefile which adds another layer of automation. This facilitates our tasks, since we don't need to remember long commands that include file paths and multiple options. All of that is replaced with simple make commands with meaningful names.
-### 5.1- Building the infrastructure
+#### 5.1- Building the infrastructure
 ```bash
 make terraform-apply
 ```
-### 5.2- Configuring the servers
+#### 5.2- Configuring the servers
 ```bash
 make ansible-config
 ```
-### 5.3- Testing the video streaming service
+#### 5.3- Testing the video streaming service
 To test the video streaming service, open your web-browser and navigate to this [URL](https://cassaafrontend.devops.intuitivesoft.cloud/)
