@@ -1,4 +1,4 @@
-# Video Streaming service with AWS, NGINX and FFMPEG
+# AWS Video Streaming service automation
 Refer to the [Getting started](#5--getting-started) section to deploy the service
 <br/>
 
@@ -18,10 +18,11 @@ Refer to the [Getting started](#5--getting-started) section to deploy the servic
         - [3.1.3- Instance module](#312-infra-module)
         - [3.1.4- Inventory module](#312-infra-module)
     - [3.2- Server configuration with Ansible](#31--server-configuration-with-ansible)
-        - [3.2.1- Ansible roles](#321--ansible-roles)
-        - [3.2.2- Nginx roles](#321--ansible-roles)
-        - [3.2.3- SSL roles](#321--ansible-roles)
-        - [3.2.3- Nat roles](#321--ansible-roles)
+        - [3.2.1- Dynamic inventory](#321--dynamic-inventory)
+        - [3.2.2- Ansible roles](#322--ansible-roles)
+        - [3.2.3- Nginx roles](#323--ansible-roles)
+        - [3.2.4- SSL roles](#324--ansible-roles)
+        - [3.2.5- Nat roles](#325--ansible-roles)
 - [4- Security measures](#4--security-measures)
     - [4.1- Principle of least privilege](#41--principle-of-least-privilege)
     - [4.2- Isolation of backend server](#41--isolation-of-backend-server)
@@ -47,5 +48,17 @@ To ensure high availability and security, we use Amazon Route 53 to provide a do
 This README will delve into the design, implementation, and security aspects of the project, highlighting its key features.
 
 ![graph](assets/graph.png)
+
+## 2- Architecture
+### 2.1- Network architecture
+Our infrastructure is hosted within a single VPC, which provides a logically isolated network in the AWS cloud. The VPC is configured with two subnets: a public subnet and a private subnet.  
+**Public subnet**: This subnet is accessible from the internet and hosts the frontend server and the bastion server. The public subnet is designed to handle incoming and outgoing internet traffic through an AWS internet gateway, ensuring that the servers hosted in the VPC can interact with external clients and services.
+**Private subnet**: This subnet is isolated from direct internet access, providing an additional layer of security for sensitive operations. The private subnet hosts the backend streamer server, which handles the actual video streaming tasks. By isolating the backend server, we limit its exposure to potential external threats. However please note the following:
+- Even though the backend server is isolated, it can access the internet by using the bastion server as a nat server. all external traffic from the backend server is routed to the bastion server that routes it to the internet through the internet gateway.
+- To configure the backend server with ansible we need SSH access, this is ensured by using the bastion server as proxy, this will be further detailed when we talk about the [Ansible inventory](#321--dynamic-inventory).
+
+
+## 3- Implementation details
+## 4- Security measures
 
 # 5- Getting started
