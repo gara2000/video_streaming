@@ -67,6 +67,10 @@ ansible-ping:
 		ansible-playbook tests\test_ping.yml ; \
 	}
 
-ansible-config: ansible-install ansible-frontend ansible-streamer
+ansible-config: ansible-install ansible-nat ansible-frontend ansible-streamer
+
+ansible-test: ansible-lint ansible-ping
 
 ansible-all: ansible-lint ansible-install ansible-frontend
+
+all: terraform-apply ansible-config
