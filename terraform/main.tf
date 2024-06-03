@@ -48,7 +48,7 @@ module "streamer" {
     sg_name = "streamer_sg"
     egress_rules = var.streamer_egress_rules
     ingress_rules = var.streamer_ingress_rules
-    associate_public_ip = true
+    associate_public_ip = false
     hosted_zone = var.hosted_zone
     domain_prefix = var.domain_prefix
     common_tags = {
@@ -72,6 +72,7 @@ module "bastion" {
     egress_rules = var.bastion_egress_rules
     ingress_rules = var.bastion_ingress_rules
     associate_public_ip = true
+    is_nat_instance = true
     hosted_zone = var.hosted_zone
     domain_prefix = var.domain_prefix
     common_tags = {
@@ -79,6 +80,13 @@ module "bastion" {
         Owner = "cassa"
         Lab = "project"
     }
+}
+
+# Send traffic from private subnet to the nat instance
+resource "aws_route" "r" {
+    route_table_id = module.infra.private_route_table_id
+    destination_cidr_block = "0.0.0.0/0"
+    network_interface_id = module.bastion.primary_net_if_id
 }
 
 # Populate the Ansible inventory file

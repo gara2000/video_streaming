@@ -72,3 +72,7 @@ variable "domain_prefix" {
     type = string
     default = "cassa"
 }
+variable "is_nat_instance" {
+    type = bool
+    default = false
+}

@@ -56,6 +56,7 @@ resource "aws_instance" "app" {
     subnet_id = var.subnet_id
     associate_public_ip_address = var.associate_public_ip
     key_name = aws_key_pair.key.key_name
+    source_dest_check = !(var.is_nat_instance)
 
     iam_instance_profile = "r53-devops"
 
