@@ -56,6 +56,7 @@ resource "aws_instance" "app" {
     subnet_id = var.subnet_id
     associate_public_ip_address = var.associate_public_ip
     key_name = aws_key_pair.key.key_name
+    source_dest_check = !(var.is_nat_instance)
 
     iam_instance_profile = "r53-devops"
 
@@ -75,7 +76,7 @@ data "aws_route53_zone" "hosted_zone" {
 resource "aws_route53_record" "my_zone" {
     count = var.associate_public_ip ? 1:0
     zone_id = data.aws_route53_zone.hosted_zone.zone_id
-    name    = "casssa${var.name}.${data.aws_route53_zone.hosted_zone.name}"
+    name    = "${var.domain_prefix}${var.name}.${data.aws_route53_zone.hosted_zone.name}"
     type    = "A"
     ttl     = "300"
     records = [aws_instance.app.public_ip]

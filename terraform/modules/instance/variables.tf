@@ -68,3 +68,11 @@ variable "sg_name" {
     description = "The name of the security group"
     type = string
 }
+variable "domain_prefix" {
+    type = string
+    default = "cassa"
+}
+variable "is_nat_instance" {
+    type = bool
+    default = false
+}

@@ -1,6 +1,6 @@
 ---
-- name: Streamer configuration
-  hosts: streamers
+- name: Test streaming from localhost
+  hosts: frontends
   become: true
   gather_facts: true
 
@@ -23,5 +23,3 @@
 
     - name: Start video streaming
       command: "ffmpeg -re -i /media/stock_screening.mp4 -c:v libx264 -c:a aac -f flv rtmp://{{ nginx_host }}/hls/my-video"
-      async: 60
-      poll: 0

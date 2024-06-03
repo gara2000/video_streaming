@@ -1,7 +1,0 @@
----
-nginx_host: "192.168.2.170"
-http_host: casssafrontend.devops.intuitivesoft.cloud
-http_port: 80
-servers:
-  - http
-  - rtmp

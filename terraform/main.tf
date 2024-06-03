@@ -26,7 +26,8 @@ module "frontend" {
     egress_rules = var.frontend_egress_rules
     ingress_rules = var.frontend_ingress_rules
     associate_public_ip = true
-    hosted_zone = "devops.intuitivesoft.cloud."
+    hosted_zone = var.hosted_zone
+    domain_prefix = var.domain_prefix
     common_tags = {
         Name = "cassa_frontend"
         Owner = "cassa"
@@ -47,8 +48,9 @@ module "streamer" {
     sg_name = "streamer_sg"
     egress_rules = var.streamer_egress_rules
     ingress_rules = var.streamer_ingress_rules
-    associate_public_ip = true
-    hosted_zone = "devops.intuitivesoft.cloud."
+    associate_public_ip = false
+    hosted_zone = var.hosted_zone
+    domain_prefix = var.domain_prefix
     common_tags = {
         Name = "cassa_streamer"
         Owner = "cassa"
@@ -70,7 +72,9 @@ module "bastion" {
     egress_rules = var.bastion_egress_rules
     ingress_rules = var.bastion_ingress_rules
     associate_public_ip = true
-    hosted_zone = "devops.intuitivesoft.cloud."
+    is_nat_instance = true
+    hosted_zone = var.hosted_zone
+    domain_prefix = var.domain_prefix
     common_tags = {
         Name = "cassa_bastion"
         Owner = "cassa"
@@ -81,7 +85,7 @@ module "bastion" {
 # Populate the Ansible inventory file
 module "inventory" {
     source = "./modules/inventory"
-    template_path = "${path.cwd}/../ansible/inventory.tpl"
+    template_path = "${path.cwd}/templates/inventory.tpl"
     inventory_path = "${path.cwd}/../ansible/inventory/hosts"
     groups = [{
         name = "frontends",
@@ -107,4 +111,27 @@ module "inventory" {
         user = "ubuntu"
         private = false
     }]
+}
+
+resource "local_file" "ansible_variables" {
+  content = templatefile("templates/vars.yml.tpl",
+    {
+        ansible_vars = var.ansible_vars,
+        additional_vars = {
+            domain = module.frontend.public_dns
+            nginx_host = module.frontend.private_ip
+            private_cidr_block = var.private_cidr_block
+        }
+    }
+  )
+  filename = "${path.cwd}/../ansible/vars/vars_terraform.yml"
+}
+
+# Send traffic from private subnet to the nat instance (didn't do anything)
+resource "aws_route" "r" {
+    route_table_id = module.infra.private_route_table_id
+    destination_cidr_block = "0.0.0.0/0"
+    network_interface_id = module.bastion.primary_net_if_id
+
+    depends_on = [ module.infra, module.bastion ]
 }

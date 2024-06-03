@@ -1,9 +1,0 @@
-server {
-    listen {{HTTP_PORT}};
-    server_name {{NGINX_HOST}};
-
-    location / {
-        root /var/www/{{domain}};
-        index index.html;
-    }
-}

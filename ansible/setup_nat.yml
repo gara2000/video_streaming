@@ -1,0 +1,11 @@
+---
+- name: Setup NAT configuration on Bastion server
+  hosts: bastions
+  become: true
+  gather_facts: true
+
+  vars_files:
+    - vars/vars_terraform.yml
+  
+  roles:
+    - gara2000.nat

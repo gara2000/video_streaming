@@ -7,6 +7,7 @@ terraform-apply:
 						-var-file tfvars/frontend.tfvars \
 						-var-file tfvars/streamer.tfvars \
 						-var-file tfvars/bastion.tfvars \
+						-var-file tfvars/ansible.tfvars \
 						-auto-approve ; \
 	}
 
@@ -14,8 +15,15 @@ terraform-destroy:
 	@echo "----------Terraform: Destroying the infrastructure------------"
 	{ \
 		cd terraform ; \
-		terraform destroy -auto-approve ; \
+		terraform destroy -var-file tfvars/common.tfvars \
+						-var-file tfvars/frontend.tfvars \
+						-var-file tfvars/streamer.tfvars \
+						-var-file tfvars/bastion.tfvars \
+						-var-file tfvars/ansible.tfvars \
+						-auto-approve ; \
 	}
+
+terraform-reapply: terraform-destroy terraform-apply
 
 ansible-lint:
 	@echo "----------Ansible: install required roles --------------------"
@@ -45,11 +53,24 @@ ansible-streamer:
 		ansible-playbook streamer.yml ; \
 	}
 
+ansible-nat:
+	@echo "----------Ansible: Configure Frontend server--------------------"
+	{ \
+		cd ansible ; \
+		ansible-playbook setup_nat.yml ; \
+	}
+
 ansible-ping:
 	@echo "----------Ansible: Configure Frontend server--------------------"
 	{ \
 		cd ansible ; \
-		ansible-playbook test_ping.yml ; \
+		ansible-playbook tests\test_ping.yml ; \
 	}
 
+ansible-config: ansible-install ansible-nat ansible-frontend ansible-streamer
+
+ansible-test: ansible-lint ansible-ping
+
 ansible-all: ansible-lint ansible-install ansible-frontend
+
+reconstruct: terraform-reapply ansible-config

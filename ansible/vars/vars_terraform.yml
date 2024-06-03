@@ -1,0 +1,40 @@
+
+context: "{{ playbook_dir }}"
+
+
+dependencies:
+    - libnginx-mod-rtmp
+
+
+email: devops@intuitivesoft.cloud
+
+
+enabled_modules:
+    - ngx_rtmp_module.so
+
+
+html_file: index.html
+
+
+http_port: 80
+
+
+primary_interface: enX0
+
+
+rtmp_port: 1935
+
+
+servers:
+    - http
+    - rtmp
+
+
+domain: cassaafrontend.devops.intuitivesoft.cloud
+
+
+nginx_host: 192.168.2.165
+
+
+private_cidr_block: 192.168.1.0/24
+

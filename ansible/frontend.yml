@@ -5,7 +5,8 @@
   become: true
 
   vars_files:
-    - vars/vars.yml
+    - vars/vars_terraform.yml
 
   roles:
-    - nginx
+    - gara2000.nginx
+    - gara2000.ssl_cert
