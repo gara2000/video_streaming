@@ -52,34 +52,43 @@ This README will delve into the design, implementation, and security aspects of 
 ## 2- Architecture
 ### 2.1- Network architecture
 Our infrastructure is hosted within a single VPC, which provides a logically isolated network in the AWS cloud. The VPC is configured with two subnets: a public subnet and a private subnet.  
+
 **Public subnet**: This subnet is accessible from the internet and hosts the frontend server and the bastion server. The public subnet is designed to handle incoming and outgoing internet traffic through an AWS internet gateway, ensuring that the servers hosted in the VPC can interact with external clients and services.  
+
 **Private subnet**: This subnet is isolated from direct internet access, providing an additional layer of security for sensitive operations. The private subnet hosts the backend streamer server, which handles the actual video streaming tasks. By isolating the backend server, we limit its exposure to potential external threats. However please note the following:  
 - Even though the backend server is isolated, it can access the internet by using the bastion server as a nat server. all external traffic from the backend server is routed to the bastion server that routes it to the internet through the internet gateway.  
 - To configure the backend server with ansible we need SSH access, this is ensured by using the bastion server as proxy, this will be further detailed when we talk about the [Ansible inventory](#321--dynamic-inventory).
 
 ### 2.2- Instances and roles
 The network architecture involves three key instances, each with specific roles and responsibilities:
+
 #### 2.2.1- Frontend server
 The frontend server in our architecture plays a crucial role in delivering video content to end-users. It leverages Nginx to handle two main types of servers: the RTMP (Real-Time Messaging Protocol) server and the HTTP server. Each server has specific functions to ensure seamless video streaming and delivery.
 
 **RTMP Server**:  
 The RTMP server listens for incoming video streams from the backend server, which uses ffmpeg to push the video content. The RTMP server then processes and forwards these streams for further distribution.  
+
 **HTTP Server**:  
  The HTTP server delivers the video content to end-users over the web. It provides a user-friendly interface for accessing live and on-demand video streams. The server also handles SSL/TLS to secure the communication. 
 
 #### 2.2.2- Bastion server
 The bastion server in our architecture serves as a crucial security component, acting as a nat gateway and intermediary for accessing the backend server in the private subnet.  
+
 **SSH Proxy**
 The bastion server acts as a secure bridge for SSH connections to the backend streamer server. This setup ensures that the backend server is not directly exposed to the internet, thereby reducing potential attack vectors.  
+
 **Internet Proxy (NAT Server)**  
 The bastion server also functions as an internet proxy, allowing the backend server to access the internet for necessary updates, downloads, and communications without being directly exposed to the internet.  
 
 #### 2.2.3- Backend streaming server
 **Video Processing and Streaming:**  
 The backend streamer server uses ffmpeg, a powerful multimedia framework, to process and stream video content. It reads video files and encodes them into formats suitable for web delivery.  
+
 The server is responsible for converting and transmitting video streams to the frontend server, which then delivers them to the end users via the Nginx web server.  
+
 **Connection Management:**  
 The backend server does not have direct internet access for security reasons. Instead, it connects to the internet through the bastion server, which serves as a NAT (Network Address Translation) server. This setup ensures that the backend server can fetch updates or external resources securely without being exposed to potential threats.
+
 **Internal Communication:**
 The backend streamer server communicates with the frontend server within the Virtual Private Cloud (VPC). This internal communication is secured and does not require exposure to the public internet, enhancing the overall security of the system.
 
@@ -88,15 +97,15 @@ The backend streamer server communicates with the frontend server within the Vir
 #### 3.1.1- Modular design
 In our Terraform implementation we adopt a modular design: we separate the tasks among several modules, each serving a number of related tasks. By organizing the project into distinct modules, each responsible for a specific set of tasks, we achieve several key advantages:
 
-Separation of Concerns: Each module is dedicated to a particular aspect of the infrastructure, hence having a clear and focused responsibility.  
+**Separation of Concerns:** Each module is dedicated to a particular aspect of the infrastructure, hence having a clear and focused responsibility.  
 
-Maintainability and Reduced Complexity: By breaking down the infrastructure into smaller, manageable parts, we reduce the overall complexity of the Terraform codebase. This makes it easier to understand, develop, and troubleshoot.  
+**Maintainability and Reduced Complexity:** By breaking down the infrastructure into smaller, manageable parts, we reduce the overall complexity of the Terraform codebase. This makes it easier to understand, develop, and troubleshoot.  
 
-Reusability: Modules can be reused whether in the same project or across different projects or environments. For example, the instance module is used three times in this project to create the three servers, each with specific variables.   
+**Reusability:** Modules can be reused whether in the same project or across different projects or environments. For example, the instance module is used three times in this project to create the three servers, each with specific variables.   
 
-Consistency: Using standardized modules ensures that similar resources are created and configured in a consistent manner across different deployments.  
+**Consistency:** Using standardized modules ensures that similar resources are created and configured in a consistent manner across different deployments.  
 
-Scalability: Modules can be scaled independently based on the needs of the project. For instance, additional instances can be added through the instance module without modifying the network setup.
+**Scalability:** Modules can be scaled independently based on the needs of the project. For instance, additional instances can be added through the instance module without modifying the network setup.
 
 #### 3.1.2- Infra module
 **Purpose:** The infra module is designed to create and configure the foundational network infrastructure.  
@@ -174,4 +183,15 @@ The bastion server serves as a secure gateway for accessing the backend server. 
 ### 4.4- Data Encryption with SSL:
 Data encryption measures are implemented on our web server to ensure the confidentiality and integrity of transmitted information. By issuing an SSL certification , we guarantee end-to-end encryption for all data exchanged between clients and the web server.
 
-# 5- Getting started
+## 5- Getting started
+All the necessary commands are included in a Makefile which adds another layer of automation. This facilitates our tasks, since we don't need to remember long commands that include file paths and multiple options. All of that is replaced with simple make commands with meaningful names.
+### 5.1- Building the infrastructure
+```bash
+make terraform-apply
+```
+### 5.2- Configuring the servers
+```bash
+make ansible-config
+```
+### 5.3- Testing the video streaming service
+To test the video streaming service, open your web-browser and navigate to this [URL](https://cassaafrontend.devops.intuitivesoft.cloud/)
