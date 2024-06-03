@@ -10,4 +10,5 @@ ansible_vars = {
     email = "devops@intuitivesoft.cloud"
     http_port = 80
     rtmp_port = 1935 
+    primary_interface = "enX0"
 }

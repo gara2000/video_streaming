@@ -23,6 +23,8 @@ terraform-destroy:
 						-auto-approve ; \
 	}
 
+terraform-reapply: terraform-destroy terraform-apply
+
 ansible-lint:
 	@echo "----------Ansible: install required roles --------------------"
 	{ \
@@ -49,6 +51,13 @@ ansible-streamer:
 	{ \
 		cd ansible ; \
 		ansible-playbook streamer.yml ; \
+	}
+
+ansible-nat:
+	@echo "----------Ansible: Configure Frontend server--------------------"
+	{ \
+		cd ansible ; \
+		ansible-playbook setup_nat.yml ; \
 	}
 
 ansible-ping:

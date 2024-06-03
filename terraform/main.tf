@@ -82,13 +82,6 @@ module "bastion" {
     }
 }
 
-# Send traffic from private subnet to the nat instance
-resource "aws_route" "r" {
-    route_table_id = module.infra.private_route_table_id
-    destination_cidr_block = "0.0.0.0/0"
-    network_interface_id = module.bastion.primary_net_if_id
-}
-
 # Populate the Ansible inventory file
 module "inventory" {
     source = "./modules/inventory"
@@ -127,8 +120,18 @@ resource "local_file" "ansible_variables" {
         additional_vars = {
             domain = module.frontend.public_dns
             nginx_host = module.frontend.private_ip
+            private_cidr_block = var.private_cidr_block
         }
     }
   )
   filename = "${path.cwd}/../ansible/vars/vars_terraform.yml"
+}
+
+# Send traffic from private subnet to the nat instance (didn't do anything)
+resource "aws_route" "r" {
+    route_table_id = module.infra.private_route_table_id
+    destination_cidr_block = "0.0.0.0/0"
+    network_interface_id = module.bastion.primary_net_if_id
+
+    depends_on = [ module.infra, module.bastion ]
 }

@@ -19,6 +19,9 @@ html_file: index.html
 http_port: 80
 
 
+primary_interface: enX0
+
+
 rtmp_port: 1935
 
 
@@ -27,8 +30,11 @@ servers:
     - rtmp
 
 
-domain: caassafrontend.devops.intuitivesoft.cloud
+domain: cassafrontend.devops.intuitivesoft.cloud
 
 
-nginx_host: 192.168.2.75
+nginx_host: 192.168.2.43
+
+
+private_cidr_block: 192.168.1.0/24
 

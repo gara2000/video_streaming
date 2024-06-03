@@ -23,3 +23,5 @@
 
     - name: Start video streaming
       command: "ffmpeg -re -i /media/stock_screening.mp4 -c:v libx264 -c:a aac -f flv rtmp://{{ nginx_host }}/hls/my-video"
+      async: 60
+      poll: 0

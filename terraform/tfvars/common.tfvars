@@ -11,4 +11,4 @@ common_tags = {
     Lab = "project"
 }
 hosted_zone = "devops.intuitivesoft.cloud."
-domain_prefix = "caassa"
+domain_prefix = "cassa"
