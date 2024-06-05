@@ -12,30 +12,31 @@ Refer to the [Getting started](#5--getting-started) section to deploy the servic
     - [2.2- Instances and roles](#22--instances-and-roles)
         - [2.2.1- Frontend server](#221--frontend-server)
         - [2.2.2- Bastion server](#222--bastion-server)
-        - [2.2.3- Backend streaming server](#222--backend-streaming-server)
+        - [2.2.3- Backend streaming server](#223--backend-streaming-server)
 - [3- Implementation details](#3--implementation-details)
     - [3.1- Infrastructure provisioning with terraform](#31--infrastructure-provisioning-with-terraform)
-        - [3.1.1- Modular design](#311-modular-design)
-        - [3.1.2- Infra module](#312-infra-module)
-        - [3.1.3- Instance module](#312-infra-module)
-        - [3.1.4- Inventory module](#312-infra-module)
-    - [3.2- Server configuration with Ansible](#31--server-configuration-with-ansible)
+        - [3.1.1- Modular design](#311--modular-design)
+        - [3.1.2- Infra module](#312--infra-module)
+        - [3.1.3- Instance module](#313--instance-module)
+        - [3.1.4- Inventory module](#314--inventory-module)
+    - [3.2- Server configuration with Ansible](#32--server-configuration-with-ansible)
         - [3.2.1- Dynamic inventory](#321--dynamic-inventory)
         - [3.2.2- Ansible roles](#322--ansible-roles)
-        - [3.2.3- Nginx roles](#323--ansible-roles)
-        - [3.2.4- SSL roles](#324--ansible-roles)
-        - [3.2.5- Nat roles](#325--ansible-roles)
+        - [3.2.3- Nginx role](#323--nginx-role)
+        - [3.2.4- SSL role](#324--ssl-role)
+        - [3.2.5- Nat role](#325--nat-role)
 - [4- Security measures](#4--security-measures)
     - [4.1- Principle of least privilege](#41--principle-of-least-privilege)
-    - [4.2- Isolation of backend server](#41--isolation-of-backend-server)
-    - [4.3- Use of bastion server](#41--use-of-bastion-server)
-    - [4.3- Data encryption with ssl](#41--data-encryption-with-ssl)
-        (talk about route53)
+    - [4.2- Isolation of backend server](#42--isolation-of-backend-server)
+    - [4.3- Use of bastion server](#43--use-of-bastion-server)
+    - [4.4- Data encryption with ssl](#44--data-encryption-with-ssl)
 - [5- Getting started](#5--getting-started)
     - [5.1- Project requirements](#51--project-requirements)
-    - [5.1- Building the infrastructure](#51--building-the-infrastructure)
-    - [5.2- Configuring the servers](#51--configuring-the-servers)
-    - [5.3- Testing the video streaming service](#53--testing-the-video-streaming-service)
+        - [5.1.1- Required packages](#511--required-packages)
+        - [5.1.2- Authentication requirements](#512-authentication-requirements)
+    - [5.2- Building the infrastructure](#52--building-the-infrastructure)
+    - [5.3- Configuring the servers](#53--configuring-the-servers)
+    - [5.4- Testing the video streaming service](#54--testing-the-video-streaming-service)
 
 
 <!-- /TOC -->
@@ -179,7 +180,7 @@ Every component of the infrastructure is granted only the minimum level of acces
 ### 4.2- Isolation of Backend Server:
 The backend streamer server is placed in a private subnet, inaccessible from the internet directly. This isolation ensures that the server is shielded from external threats and unauthorized access attempts.
 
-### 4.3- Usage of Bastion Server:
+### 4.3- Use of Bastion Server:
 The bastion server serves as a secure gateway for accessing the backend server. It acts as an SSH proxy, allowing administrators to securely connect to the private subnet. Additionally, it functions as an internet proxy (NAT server), enabling the backend server to establish outbound connections to the internet through a controlled gateway.
 
 ### 4.4- Data Encryption with SSL:
@@ -187,6 +188,26 @@ Data encryption measures are implemented on our web server to ensure the confide
 
 ## 5- Getting started
 ### 5.1- Project requirements
+#### 5.1.1- Required packages
+1. **Operating System**: all the commands and scripts run in this project are in Linux OS
+2. **Terraform**: Refer to the [Terraform installation guide](https://developer.hashicorp.com/terraform/install?product_intent=terraform)
+3. **Ansible**:  Refer to the [Ansible installation guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).  
+Also make sure you have **openssh-server** installed on your computer for Ansible to be able to SSH into the EC2 instances.
+```bash
+sudo apt install -y openssh-server
+```
+#### 5.1.2 Authentication requirements
+In order to be able to create and manage AWS resources you have to authenticate to your AWS account  
+
+1. **AWS CLI installation**: Refer to the [AWS CLI installation guide](https://docs.aws.amazon.com/cli/v1/userguide/cli-chap-install.html)
+
+**Note:** For conformity with this GitHub repository please choose "telecom" as profile-name.
+
+2. **Verify authentication**: Once the authentication is complete, you can verify with the following command:
+```bash
+aws s3 ls --profile admin
+```
+**Note:** some of the actions performed in this repository are **NOT Free-Tier elligible**
 
 ### 5.2- Deploying the service
 All the necessary commands are included in a Makefile which adds another layer of automation. This facilitates our tasks, since we don't need to remember long commands that include file paths and multiple options. All of that is replaced with simple make commands with meaningful names.
@@ -194,9 +215,30 @@ All the necessary commands are included in a Makefile which adds another layer o
 ```bash
 make terraform-apply
 ```
+This command is an alias to a set of more verbose commands:
+```bash
+cd terraform
+terraform init
+terraform apply -var-file tfvars/common.tfvars \
+                -var-file tfvars/frontend.tfvars \
+                -var-file tfvars/streamer.tfvars \
+                -var-file tfvars/bastion.tfvars \
+                -var-file tfvars/ansible.tfvars \
+                -auto-approve ; \
+```
+After changing the directory from the root project folder to terraform/ folder, we initialize the terraform project and we apply the infrastructure with the variables indside the specified variables files, we add the `-auto-approve` to avoid being prompted for approving the infrastructure changes that Terraform will make.
 #### 5.2- Configuring the servers
 ```bash
 make ansible-config
 ```
+Again this command makes reference to a set of commands:
+```bash
+cd ansible 
+ansible-galaxy install -r requirements.yml --force 
+ansible-playbook setup_nat.yml 
+ansible-playbook streamer.yml 
+ansible-playbook frontend.yml 
+```
+After changing the directory from the root project folder to the ansible folder, we install the ansible-galaxy roles with `ansible-galaxy install` (the required roles are specified in the `requirements.yml` file), then the follwing three `ansible-playbook commands` configure the different servers.
 #### 5.3- Testing the video streaming service
 To test the video streaming service, open your web-browser and navigate to this [URL](https://cassaafrontend.devops.intuitivesoft.cloud/)
