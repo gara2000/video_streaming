@@ -33,7 +33,7 @@ servers:
 domain: cassaafrontend.devops.intuitivesoft.cloud
 
 
-nginx_host: 192.168.2.165
+nginx_host: 192.168.2.231
 
 
 private_cidr_block: 192.168.1.0/24

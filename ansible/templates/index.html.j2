@@ -3,11 +3,30 @@
     <head>
         <title>Live Streaming</title>
         <link rel="stylesheet" href="https://vjs.zencdn.net/8.10.0/video-js.css">
+        <style>
+            body, html {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            #video-container {
+                margin: 2rem 0;
+                width: 100%; /* Adjust as needed */
+            }
+            #player {
+                border: 5px solid #555; /* White border to highlight the video */
+                padding: 10px; /* Add some padding to space the video from the border */
+                box-sizing: border-box; /* Ensure padding and border are included in the width calculation */
+            }
+        </style>
     </head>
     <body>
-        <video id="player" class="video-js vjs-default-skin" width="360" controls autoplay muted>
-            <source src="https://{{ domain }}/hls/my-video.m3u8" type="application/x-mpegURL"/>
-        </video>
+        <div id="video-container">
+            <h1>Video Streaming Service with NGINX and FFMPEG</h1> 
+            <video id="player" class="video-js vjs-default-skin" width="800" controls autoplay muted>
+                <source src="https://{{ domain }}/hls/my-video.m3u8" type="application/x-mpegURL"/>
+            </video>
+        </div>
         <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
         <script>
             videojs('#player');

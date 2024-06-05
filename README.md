@@ -251,3 +251,4 @@ ansible-playbook frontend.yml
 After changing the directory from the root project folder to the ansible folder, we install the ansible-galaxy roles with `ansible-galaxy install` (the required roles are specified in the `requirements.yml` file), then the follwing three `ansible-playbook commands` configure the different servers.
 #### 5.2.4- Testing the video streaming service
 To test the video streaming service, open your web-browser and navigate to this [URL](https://cassaafrontend.devops.intuitivesoft.cloud/)
+![Service Deployed](assets/service_deployed.png)
