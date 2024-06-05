@@ -224,7 +224,7 @@ terraform apply -var-file tfvars/common.tfvars \
                 -var-file tfvars/streamer.tfvars \
                 -var-file tfvars/bastion.tfvars \
                 -var-file tfvars/ansible.tfvars \
-                -auto-approve ; \
+                -auto-approve 
 ```
 After changing the directory from the root project folder to terraform/ folder, we initialize the terraform project and we apply the infrastructure with the variables indside the specified variables files, we add the `-auto-approve` to avoid being prompted for approving the infrastructure changes that Terraform will make.
 #### 5.2- Configuring the servers
