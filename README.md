@@ -203,6 +203,8 @@ In order to be able to create and manage AWS resources you have to authenticate 
 
 1. **AWS CLI installation**: Refer to the [AWS CLI installation guide](https://docs.aws.amazon.com/cli/v1/userguide/cli-chap-install.html)
 
+2. **AWS authentication**: Refer to the [AWS Authentication with short-term credentials guide](https://docs.aws.amazon.com/cli/v1/userguide/cli-chap-authentication.html) (this is the recommended authentication method)
+
 **Note:** For conformity with this GitHub repository please choose "telecom" as profile-name.
 
 2. **Verify authentication**: Once the authentication is complete, you can verify with the following command:
