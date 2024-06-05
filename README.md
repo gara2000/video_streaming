@@ -214,7 +214,7 @@ aws s3 ls --profile admin
 **Warning:** some of the actions performed in this repository are **NOT Free-Tier elligible!**
 
 ### 5.2- Deploying the service
-Before building the service, make sure to change the `domain_prefix` variable under the `terraform/tfvars/common.tfvars` file. Otherwise you will encouter some errors because the domain name is already used.  
+**NOTE!** Before building the service, make sure to change the `domain_prefix` variable under the `terraform/tfvars/common.tfvars` file. Otherwise you will encouter some errors because the domain name is already used.  
 
 All the necessary commands are included in a Makefile which adds another layer of automation. This facilitates our tasks, since we don't need to remember long commands that include file paths and multiple options. All of that is replaced with simple make commands with meaningful names.
 #### 5.2.1- Cloning the repository
