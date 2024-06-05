@@ -1,4 +1,6 @@
 # AWS Video Streaming Service Automation
+Automated Streaming Service with Nginx, and FFMEPG. Running on AWS Cloud,
+![graph](assets/graph.png)
 Refer to the [Getting started](#5--getting-started) section to deploy the service
 <br/>
 
@@ -48,7 +50,6 @@ To ensure high availability and security, we use Amazon Route 53 to provide a do
 
 This README will delve into the design, implementation, and security aspects of the project, highlighting its key features.
 
-![graph](assets/graph.png)
 
 ## 2- Architecture
 ### 2.1- Network architecture
