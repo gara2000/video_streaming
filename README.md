@@ -34,9 +34,11 @@ Refer to the [Getting started](#5--getting-started) section to deploy the servic
     - [5.1- Project requirements](#51--project-requirements)
         - [5.1.1- Required packages](#511--required-packages)
         - [5.1.2- Authentication requirements](#512-authentication-requirements)
-    - [5.2- Building the infrastructure](#52--building-the-infrastructure)
-    - [5.3- Configuring the servers](#53--configuring-the-servers)
-    - [5.4- Testing the video streaming service](#54--testing-the-video-streaming-service)
+    - [5.2- Deploying the service](#52--deploying-the-service)
+        - [5.2.1- Cloning the repository](#521--cloning-the-repository)
+        - [5.2.2- Building the infrastructure](#522--building-the-infrastructure)
+        - [5.2.3- Configuring the servers](#523--configuring-the-servers)
+        - [5.2.4- Testing the video Streaming service](#524--testing-the-video-streaming-service)
 
 
 <!-- /TOC -->
@@ -211,7 +213,12 @@ aws s3 ls --profile admin
 
 ### 5.2- Deploying the service
 All the necessary commands are included in a Makefile which adds another layer of automation. This facilitates our tasks, since we don't need to remember long commands that include file paths and multiple options. All of that is replaced with simple make commands with meaningful names.
-#### 5.1- Building the infrastructure
+#### 5.2.1- Cloning the repository
+```bash
+git clone https://github.com/gara2000/video_streaming.git
+cd vido_streaming
+```
+#### 5.2.2- Building the infrastructure
 ```bash
 make terraform-apply
 ```
@@ -227,7 +234,7 @@ terraform apply -var-file tfvars/common.tfvars \
                 -auto-approve 
 ```
 After changing the directory from the root project folder to terraform/ folder, we initialize the terraform project and we apply the infrastructure with the variables indside the specified variables files, we add the `-auto-approve` to avoid being prompted for approving the infrastructure changes that Terraform will make.
-#### 5.2- Configuring the servers
+#### 5.2.3- Configuring the servers
 ```bash
 make ansible-config
 ```
@@ -240,5 +247,5 @@ ansible-playbook streamer.yml
 ansible-playbook frontend.yml 
 ```
 After changing the directory from the root project folder to the ansible folder, we install the ansible-galaxy roles with `ansible-galaxy install` (the required roles are specified in the `requirements.yml` file), then the follwing three `ansible-playbook commands` configure the different servers.
-#### 5.3- Testing the video streaming service
+#### 5.2.4- Testing the video streaming service
 To test the video streaming service, open your web-browser and navigate to this [URL](https://cassaafrontend.devops.intuitivesoft.cloud/)
