@@ -211,7 +211,7 @@ In order to be able to create and manage AWS resources you have to authenticate 
 ```bash
 aws s3 ls --profile admin
 ```
-**Note:** some of the actions performed in this repository are **NOT Free-Tier elligible**
+**Warning:** some of the actions performed in this repository are **NOT Free-Tier elligible!**
 
 ### 5.2- Deploying the service
 All the necessary commands are included in a Makefile which adds another layer of automation. This facilitates our tasks, since we don't need to remember long commands that include file paths and multiple options. All of that is replaced with simple make commands with meaningful names.
