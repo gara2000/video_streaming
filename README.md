@@ -207,7 +207,7 @@ In order to be able to create and manage AWS resources you have to authenticate 
 
 **Note:** For conformity with this GitHub repository please choose "telecom" as profile-name.
 
-2. **Verify authentication**: Once the authentication is complete, you can verify with the following command:
+3. **Verify authentication**: Once the authentication is complete, you can verify with the following command:
 ```bash
 aws s3 ls --profile admin
 ```
